@@ -20,7 +20,7 @@ final class ArticleCreatedLogger
         $this->logger->info(sprintf(
             'Article created: "%s" (ID: %s)',
             $event->getArticle()->getTitle(),
-            $event->getArticle()->getId()
+            $event->getArticle()->getId()->getUuid(),
         ));
     }
 }

@@ -6,8 +6,8 @@ namespace App\Content\Domain\Exception;
 
 final class ArticleLoadingException extends \DomainException
 {
-    public function __construct(int $id, \Throwable $previous = null)
+    public function __construct(string $id, \Throwable $previous = null)
     {
-        parent::__construct(sprintf('Article with ID %d not found.', $id), 12254, $previous);
+        parent::__construct(sprintf('Article with ID %s not found.', $id), 12254, $previous);
     }
 }

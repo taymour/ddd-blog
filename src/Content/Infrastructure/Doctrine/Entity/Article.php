@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Content\Infrastructure\Doctrine\Entity;
 
 use App\Content\Domain\Model\Article as ArticleModel;
+use App\Content\Infrastructure\Doctrine\Id\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -54,7 +55,7 @@ class Article
     public function toModel(): ArticleModel
     {
         return new ArticleModel(
-            $this->id,
+            Uuid::fromString($this->id),
             $this->title,
             $this->body
         );
@@ -63,7 +64,7 @@ class Article
     public static function fromModel(ArticleModel $articleModel): self
     {
         $article = new self();
-        $article->id = $articleModel->getId() ?? null;
+        $article->id = $articleModel->getId()->getUuid() ?? null;
         $article->title = $articleModel->getTitle();
         $article->body = $articleModel->getBody();
 

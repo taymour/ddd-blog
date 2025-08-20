@@ -37,7 +37,7 @@ final class ArticleResponseDto
     public static function fromModel(ArticleModel $article): self
     {
         return new self(
-            $article->getId(),
+            $article->getId()->getUuid(),
             $article->getTitle(),
             $article->getBody()
         );

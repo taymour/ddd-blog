@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Content\Presentation\Http\Controller;
 
 use App\Content\Application\Article\Command\CreateBasicArticle\CreateBasicArticleCommand;
-use App\Content\Application\Article\Command\CreateBasicArticle\CreateBasicArticleProjection;
-use App\Content\Application\Article\Projection\ArticleCreatedProjection;
 use App\Content\Application\Article\Query\GetArticleById\GetArticleByIdQuery;
+use App\Content\Infrastructure\Doctrine\Id\Uuid;
 use App\Content\Presentation\Http\Dto\ArticleRequestDto;
 use App\Content\Presentation\Http\Dto\ArticleResponseDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +18,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
@@ -39,7 +37,7 @@ final class ArticleController extends AbstractController
             );
         } catch (\Throwable $e) {
             throw new NotFoundHttpException(
-                sprintf('Article with ID %d not found.', $id),
+                sprintf('Article with ID %s not found.', $id),
                 $e,
             );
         }
@@ -68,17 +66,17 @@ final class ArticleController extends AbstractController
             );
         }
 
-        $id = Uuid::v4()->toString();
+        $id = Uuid::createNew();
 
         try {
             $bus->dispatch(new CreateBasicArticleCommand(
-                $id,
+                $id->getUuid(),
                 $articleDto->getTitle(),
                 $articleDto->getContent()
             ));
 
             return $this->json(
-                $router->generate('article_show', ['id' => $id], RouterInterface::ABSOLUTE_URL),
+                $router->generate('article_show', ['id' => $id->getUuid()], RouterInterface::ABSOLUTE_URL),
                 JsonResponse::HTTP_CREATED
             );
         } catch (\Throwable $e) {
