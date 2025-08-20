@@ -74,7 +74,7 @@ final class ArticleController extends AbstractController
             // can wait here if the command is async
 
             return $this->json(
-                $projection->getArticle(),
+                ArticleResponseDto::fromModel($projection->getArticle()),
                 JsonResponse::HTTP_CREATED
             );
         } catch (\Throwable $e) {
