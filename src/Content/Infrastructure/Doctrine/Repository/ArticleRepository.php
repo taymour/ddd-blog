@@ -21,6 +21,10 @@ final class ArticleRepository extends ServiceEntityRepository implements Article
     {
         $article = $this->findOneBy(['id' => $id]);
 
+        if (null === $article) {
+            throw new \LogicException(sprintf('Article with id "%s" does not exist in database.', $id));
+        }
+
         return $article->toModel();
     }
 
