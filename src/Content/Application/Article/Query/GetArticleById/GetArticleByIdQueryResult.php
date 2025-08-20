@@ -1,32 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Content\Application\Article\Query\GetArticleById;
 
-class GetArticleByIdQueryResult
+use App\Content\Domain\Model\Article as ArticleModel;
+
+final class GetArticleByIdQueryResult
 {
-    private int $id;
-    private string $title;
-    private string $body;
-
-    public function __construct(int $id, string $title, string $body)
+    public function __construct(private readonly ArticleModel $article)
     {
-        $this->id = $id;
-        $this->title = $title;
-        $this->body = $body;
     }
 
-    public function getId(): int
+    public function getArticle(): ArticleModel
     {
-        return $this->id;
-    }
-
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    public function getBody(): string
-    {
-        return $this->body;
+        return $this->article;
     }
 }

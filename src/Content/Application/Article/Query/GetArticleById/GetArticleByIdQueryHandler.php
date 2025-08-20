@@ -14,12 +14,8 @@ final class GetArticleByIdQueryHandler
 
     public function __invoke(GetArticleByIdQuery $query): GetArticleByIdQueryResult
     {
-        $article = $this->articleLoader->load($query->getId());
-
         return new GetArticleByIdQueryResult(
-            $article->getId(),
-            $article->getTitle(),
-            $article->getBody()
+            $this->articleLoader->load($query->getId())
         );
     }
 }

@@ -19,6 +19,24 @@ final class ArticleRepository extends ServiceEntityRepository implements Article
 
     public function findOneById(int $id): ArticleModel
     {
-        return $this->find($id);
+        $article = $this->findOneBy(['id' => $id]);
+
+        return $article->toModel();
+    }
+
+    public function articleWithTitleExists(string $title): bool
+    {
+        return null !== $this->findOneBy(['title' => $title]);
+    }
+
+    public function save(ArticleModel $article): ArticleModel
+    {
+        $entity = Article::fromModel($article);
+
+        $em = $this->getEntityManager();
+        $em->persist($entity);
+        $em->flush();
+
+        return $entity->toModel();
     }
 }

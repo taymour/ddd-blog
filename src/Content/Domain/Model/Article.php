@@ -6,20 +6,20 @@ namespace App\Content\Domain\Model;
 
 class Article
 {
-    private int $id;
+    private ?int $id;
 
     private string $title;
 
     private string $body;
 
-    public function __construct(int $id, string $title, string $body)
+    public function __construct(?int $id, string $title, string $body)
     {
         $this->id = $id;
         $this->title = $title;
         $this->body = $body;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

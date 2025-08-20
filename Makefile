@@ -6,3 +6,6 @@ install:
 
 start:
 	docker compose up -d
+
+shell:
+	docker compose exec php bash

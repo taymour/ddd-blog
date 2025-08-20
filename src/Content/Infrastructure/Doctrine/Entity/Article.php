@@ -14,7 +14,7 @@ class Article
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private int $id;
+    private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
@@ -22,7 +22,7 @@ class Article
     #[ORM\Column(type: 'text')]
     private string $body;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -59,7 +59,7 @@ class Article
     public static function fromModel(ArticleModel $articleModel): self
     {
         $article = new self();
-        $article->id = $articleModel->getId();
+        $article->id = $articleModel->getId() ?? null;
         $article->title = $articleModel->getTitle();
         $article->body = $articleModel->getBody();
 
