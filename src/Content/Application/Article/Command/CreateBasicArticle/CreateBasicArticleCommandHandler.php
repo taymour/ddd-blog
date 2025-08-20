@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Content\Application\Article\Command\CreateBasicArticle;
 
 use App\Content\Domain\Article\ArticleCreator;
@@ -12,7 +14,6 @@ final class CreateBasicArticleCommandHandler
 {
     public function __construct(
         private readonly ArticleCreator $articleCreator,
-        private readonly CreateBasicArticleProjection $projection,
         private readonly EventDispatcherInterface $eventDispatcher,
     )
     {
@@ -21,12 +22,10 @@ final class CreateBasicArticleCommandHandler
     public function __invoke(CreateBasicArticleCommand $command): void
     {
         $articleEvent = $this->articleCreator->create(new Article(
-            null,
+            $command->getId(),
             $command->getTitle(),
             $command->getBody(),
         ));
-
-        $this->projection->setArticle($articleEvent->getArticle());
 
         $this->eventDispatcher->dispatch($articleEvent);
     }

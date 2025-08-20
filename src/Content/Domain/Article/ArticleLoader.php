@@ -14,7 +14,7 @@ final class ArticleLoader
     {
     }
 
-    public function load(int $id): Article
+    public function load(string $id): Article
     {
         try {
             return $this->storage->findOneById($id);

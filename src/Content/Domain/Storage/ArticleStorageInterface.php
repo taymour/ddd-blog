@@ -8,7 +8,7 @@ use App\Content\Domain\Model\Article;
 
 interface ArticleStorageInterface
 {
-    public function findOneById(int $id): Article;
+    public function findOneById(string $id): Article;
 
     public function save(Article $article): Article;
 

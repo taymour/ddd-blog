@@ -8,18 +8,18 @@ use App\Content\Domain\Model\Article as ArticleModel;
 
 final class ArticleResponseDto
 {
-    private int $id;
+    private string $id;
     private string $title;
     private string $content;
 
-    public function __construct(int $id, string $title, string $content)
+    public function __construct(string $id, string $title, string $content)
     {
         $this->id = $id;
         $this->title = $title;
         $this->content = $content;
     }
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }

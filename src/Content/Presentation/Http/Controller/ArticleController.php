@@ -6,6 +6,7 @@ namespace App\Content\Presentation\Http\Controller;
 
 use App\Content\Application\Article\Command\CreateBasicArticle\CreateBasicArticleCommand;
 use App\Content\Application\Article\Command\CreateBasicArticle\CreateBasicArticleProjection;
+use App\Content\Application\Article\Projection\ArticleCreatedProjection;
 use App\Content\Application\Article\Query\GetArticleById\GetArticleByIdQuery;
 use App\Content\Presentation\Http\Dto\ArticleRequestDto;
 use App\Content\Presentation\Http\Dto\ArticleResponseDto;
@@ -17,6 +18,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
@@ -24,7 +27,7 @@ final class ArticleController extends AbstractController
 {
     #[Route('/article/get/{id}', name: 'article_show', methods: ['GET'])]
     public function getArticle(
-        int $id,
+        string $id,
         MessageBusInterface $bus,
     ): JsonResponse
     {
@@ -47,7 +50,7 @@ final class ArticleController extends AbstractController
         MessageBusInterface $bus,
         Request $request,
         ValidatorInterface $validator,
-        CreateBasicArticleProjection $projection,
+        RouterInterface $router,
     ): JsonResponse {
         $articleDto = ArticleRequestDto::fromRequest($request);
 
@@ -65,16 +68,17 @@ final class ArticleController extends AbstractController
             );
         }
 
+        $id = Uuid::v4()->toString();
+
         try {
             $bus->dispatch(new CreateBasicArticleCommand(
+                $id,
                 $articleDto->getTitle(),
                 $articleDto->getContent()
             ));
 
-            // can wait here if the command is async
-
             return $this->json(
-                ArticleResponseDto::fromModel($projection->getArticle()),
+                $router->generate('article_show', ['id' => $id], RouterInterface::ABSOLUTE_URL),
                 JsonResponse::HTTP_CREATED
             );
         } catch (\Throwable $e) {

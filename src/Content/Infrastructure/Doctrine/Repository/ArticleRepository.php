@@ -17,7 +17,7 @@ final class ArticleRepository extends ServiceEntityRepository implements Article
         parent::__construct($registry, Article::class);
     }
 
-    public function findOneById(int $id): ArticleModel
+    public function findOneById(string $id): ArticleModel
     {
         $article = $this->findOneBy(['id' => $id]);
 

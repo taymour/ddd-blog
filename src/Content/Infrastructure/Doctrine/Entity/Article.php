@@ -12,9 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Article
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Column(type: 'string')]
+    private ?string $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
@@ -22,9 +21,14 @@ class Article
     #[ORM\Column(type: 'text')]
     private string $body;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
     }
 
     public function getTitle(): string

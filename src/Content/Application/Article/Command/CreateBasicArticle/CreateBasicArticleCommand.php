@@ -4,14 +4,22 @@ namespace App\Content\Application\Article\Command\CreateBasicArticle;
 
 class CreateBasicArticleCommand
 {
+    private string $id;
+
     private string $title;
 
     private string $body;
 
-    public function __construct(string $title, string $body)
+    public function __construct(string $id, string $title, string $body)
     {
+        $this->id = $id;
         $this->title = $title;
         $this->body = $body;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     public function getTitle(): string
